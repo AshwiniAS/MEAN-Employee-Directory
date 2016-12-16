@@ -32,14 +32,21 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     };
     
     $scope.editEmployee = function(id) {
-      console.log(id);
       $http.get('/employee/' + id).success(function(response) {
       $scope.employee = response;
      });
    };
     
     $scope.updateEmployee = function() {
-     console.log($scope.employee._id);
+    	var data = $scope.employee;
+    	$scope.employee = {
+    			"Name" : data.Name,
+    			"Email": data.Email,
+    			"Date_of_birth": data.Date_of_birth,
+    			"Department": data.Department,
+    			"Gender": data.Gender,
+    			"Age": Math.floor((new Date() - new Date(data.Date_of_birth))/(365*24*60*60*1000))
+    	};
      $http.put('/employee/' + $scope.employee._id, $scope.employee).success(function(response) {
        updateView();
      });
